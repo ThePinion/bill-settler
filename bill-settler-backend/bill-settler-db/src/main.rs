@@ -1,17 +1,16 @@
+use db_client::DbClient;
 use edges::knows::KnowsE;
 use error::DbError;
 use gremlin_client::derive::{FromGMap, FromGValue};
+use vertices::user::User;
 
-use crate::{
-    services::{user::UserServiceT, DbService, DbServiceT},
-    vertices::user::PasswordUser,
-};
+use crate::vertices::user::PasswordUser;
 
 mod db_client;
 mod edges;
 mod error;
-mod services;
 mod utils;
+
 mod vertices;
 
 #[derive(Debug, PartialEq, FromGValue, FromGMap)]
@@ -21,16 +20,21 @@ struct TestVertex {
 }
 
 fn main() -> Result<(), DbError> {
-    let db_service = DbService::new_use_config("localhost", 8182);
+    let db_service = DbClient::new_use_config("localhost", 8182);
 
-    let user_service = db_service.user_service();
-    user_service.add_user(PasswordUser::new("1@test.pl", "1", "secret"))?;
-    user_service.add_user(PasswordUser::new("2@test.pl", "2", "secret"))?;
-    user_service.add_user(PasswordUser::new("3@test.pl", "3", "secret"))?;
+    let new_users = vec![
+        PasswordUser::new("1@test.pl", "1", "secret"),
+        PasswordUser::new("2@test.pl", "2", "secret"),
+        PasswordUser::new("3@test.pl", "3", "secret"),
+    ];
 
-    let users = user_service.get_all_users()?;
+    for user in new_users {
+        let _ = db_service.add_vertex::<User>(user.g_props());
+    }
+
+    let users = db_service.get_all::<User>()?;
     let edge = KnowsE::new(&users[0], &users[1]);
-    user_service.add_know_edge(edge)?;
+    db_service.add_edge(edge)?;
 
     // println!("{:#?}", results);
 

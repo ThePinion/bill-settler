@@ -22,11 +22,11 @@ impl From<PasswordUser> for User {
 
 impl User {
     pub fn g_prop_email(&self) -> PropPair {
-        (stringify!(email).into(), &self.email)
+        (stringify!(email).into(), self.email.clone())
     }
 
     pub fn g_prop_handle(&self) -> PropPair {
-        (stringify!(handle).into(), &self.handle)
+        (stringify!(handle).into(), self.handle.clone())
     }
 }
 
@@ -47,6 +47,15 @@ impl PasswordUser {
     }
 
     pub fn g_prop_password(&self) -> PropPair {
-        (stringify!(password).into(), &self.password)
+        (stringify!(password).into(), self.password.clone())
+    }
+
+    pub fn g_props(&self) -> Vec<PropPair> {
+        let user = User::from(self.clone());
+        vec![
+            user.g_prop_email().clone(),
+            user.g_prop_handle().clone(),
+            self.g_prop_password(),
+        ]
     }
 }

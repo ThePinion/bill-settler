@@ -1,8 +1,11 @@
-use gremlin_client::process::traversal::{GraphTraversalSource, SyncTerminator};
+use gremlin_client::{
+    process::traversal::{traversal, GraphTraversalSource, SyncTerminator},
+    ConnectionOptions, GremlinClient,
+};
 
 use crate::{edges::DbEdge, error::DbError, vertices::DbVertex};
 
-pub type PropPair<'a> = (String, &'a str);
+pub type PropPair<'a> = (String, String);
 
 pub struct DbClient {
     pub traversal: GraphTraversalSource<SyncTerminator>,
@@ -11,6 +14,16 @@ pub struct DbClient {
 impl DbClient {
     pub fn new(traversal: GraphTraversalSource<SyncTerminator>) -> Self {
         return Self { traversal };
+    }
+
+    pub fn new_use_config(host: &str, port: u16) -> Self {
+        let options = ConnectionOptions::builder().host(host).port(port).build();
+
+        let client = GremlinClient::connect(options).expect("Can connect");
+
+        let g = traversal().with_remote(client);
+
+        DbClient::new(g.clone())
     }
 }
 
