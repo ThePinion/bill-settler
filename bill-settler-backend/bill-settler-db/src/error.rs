@@ -1,11 +1,13 @@
 use gremlin_client::GremlinError;
 
+use crate::db_client::PredicatePair;
+
 pub type DbResult<T> = core::result::Result<T, DbError>;
 
 #[derive(Debug)]
 pub enum DbError {
     Unexpected,
-    NotUnique((String, String)),
+    NotUnique(PredicatePair),
     Gremlin(GremlinError),
 }
 

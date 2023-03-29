@@ -1,8 +1,12 @@
-use crate::{db_client::PropPair, derive_entity};
+use crate::db_client::{PredicatePair, PropPair};
 
-use gremlin_client::derive::{FromGMap, FromGValue};
+use gremlin_client::{
+    derive::{FromGMap, FromGValue},
+    GValue,
+};
 
-derive_entity!(User);
+use super::{DbLabel, DbSavable, DbVertex};
+
 #[derive(Debug, PartialEq, FromGValue, FromGMap)]
 pub struct User {
     pub id: i64,
@@ -20,13 +24,15 @@ impl From<PasswordUser> for User {
     }
 }
 
-impl User {
-    pub fn g_prop_email(&self) -> PropPair {
-        (stringify!(email).into(), self.email.clone())
+impl DbLabel for User {
+    fn g_label() -> &'static str {
+        return stringify!(User).into();
     }
+}
 
-    pub fn g_prop_handle(&self) -> PropPair {
-        (stringify!(handle).into(), self.handle.clone())
+impl DbVertex for User {
+    fn id(&self) -> i64 {
+        return self.id;
     }
 }
 
@@ -45,17 +51,33 @@ impl PasswordUser {
             password: password.into(),
         }
     }
+}
 
-    pub fn g_prop_password(&self) -> PropPair {
-        (stringify!(password).into(), self.password.clone())
+impl DbLabel for PasswordUser {
+    fn g_label() -> &'static str {
+        return stringify!(User).into();
+    }
+}
+
+impl DbSavable<User> for PasswordUser {
+    fn g_props(&self) -> Vec<PropPair> {
+        vec![
+            (stringify!(email).into(), GValue::String(self.email.clone())),
+            (
+                stringify!(handle).into(),
+                GValue::String(self.handle.clone()),
+            ),
+            (
+                stringify!(password).into(),
+                GValue::String(self.password.clone()),
+            ),
+        ]
     }
 
-    pub fn g_props(&self) -> Vec<PropPair> {
-        let user = User::from(self.clone());
+    fn g_unique_props(&self) -> Vec<PredicatePair> {
         vec![
-            user.g_prop_email().clone(),
-            user.g_prop_handle().clone(),
-            self.g_prop_password(),
+            (stringify!(email).into(), self.email.clone().into()),
+            (stringify!(handle).into(), self.handle.clone().into()),
         ]
     }
 }

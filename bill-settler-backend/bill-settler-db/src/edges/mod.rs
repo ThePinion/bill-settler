@@ -1,9 +1,12 @@
-use crate::vertices::DbVertex;
+use crate::{db_client::PropPair, vertices::DbVertex};
 
-pub mod knows;
+pub mod trusts;
 
 pub trait DbEdge<S: DbVertex, T: DbVertex> {
-    fn label(&self) -> &'static str;
-    fn source_id(&self) -> i64;
-    fn target_id(&self) -> i64;
+    fn g_label(&self) -> &'static str;
+    fn g_source_id(&self) -> i64;
+    fn g_target_id(&self) -> i64;
+    fn g_props(&self) -> Vec<PropPair> {
+        vec![]
+    }
 }

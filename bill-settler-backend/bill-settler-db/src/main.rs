@@ -1,16 +1,16 @@
 use db_client::DbClient;
-use edges::knows::KnowsEdge;
+use edges::trusts::TrustsEdge;
 use error::DbError;
 use gremlin_client::derive::{FromGMap, FromGValue};
 use vertices::user::User;
 
 use crate::vertices::user::PasswordUser;
 
+mod date;
 mod db_client;
 mod edges;
 mod error;
 mod utils;
-
 mod vertices;
 
 #[derive(Debug, PartialEq, FromGValue, FromGMap)]
@@ -29,11 +29,11 @@ fn main() -> Result<(), DbError> {
     ];
 
     for user in new_users {
-        let _ = db_service.add_vertex::<User>(user.g_props());
+        let _ = db_service.add_vertex::<PasswordUser, User>(user);
     }
 
     let users = db_service.get_all::<User>()?;
-    let edge = KnowsEdge::new(&users[0], &users[1]);
+    let edge = TrustsEdge::new(&users[0], &users[1]);
     db_service.add_edge(edge)?;
 
     // println!("{:#?}", results);
