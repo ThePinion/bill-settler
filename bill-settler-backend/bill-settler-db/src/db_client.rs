@@ -3,7 +3,11 @@ use gremlin_client::{
     ConnectionOptions, GremlinClient,
 };
 
-use crate::{edges::DbEdge, error::DbError, vertices::DbVertex};
+use crate::{
+    edges::DbEdge,
+    error::{DbError, DbResult},
+    vertices::DbVertex,
+};
 
 pub type PropPair<'a> = (String, String);
 
@@ -28,7 +32,7 @@ impl DbClient {
 }
 
 impl DbClient {
-    pub fn add_vertex<T>(&self, props: Vec<PropPair>) -> Result<T, DbError>
+    pub fn add_vertex<T>(&self, props: Vec<PropPair>) -> DbResult<T>
     where
         T: DbVertex,
         DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
@@ -44,10 +48,7 @@ impl DbClient {
         Ok(T::try_from(vertex)?)
     }
 
-    pub fn add_edge<S: DbVertex, T: DbVertex, E: DbEdge<S, T>>(
-        &self,
-        edge: E,
-    ) -> Result<(), DbError> {
+    pub fn add_edge<S: DbVertex, T: DbVertex, E: DbEdge<S, T>>(&self, edge: E) -> DbResult<()> {
         self.traversal
             .v(edge.source_id())
             .as_("s")
@@ -59,7 +60,7 @@ impl DbClient {
         Ok(())
     }
 
-    pub fn get_all<T>(&self) -> Result<Vec<T>, DbError>
+    pub fn get_all<T>(&self) -> DbResult<Vec<T>>
     where
         T: DbVertex,
         DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,

@@ -1,5 +1,5 @@
 use db_client::DbClient;
-use edges::knows::KnowsE;
+use edges::knows::KnowsEdge;
 use error::DbError;
 use gremlin_client::derive::{FromGMap, FromGValue};
 use vertices::user::User;
@@ -33,7 +33,7 @@ fn main() -> Result<(), DbError> {
     }
 
     let users = db_service.get_all::<User>()?;
-    let edge = KnowsE::new(&users[0], &users[1]);
+    let edge = KnowsEdge::new(&users[0], &users[1]);
     db_service.add_edge(edge)?;
 
     // println!("{:#?}", results);

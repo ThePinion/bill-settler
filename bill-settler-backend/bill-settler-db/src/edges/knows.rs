@@ -2,19 +2,19 @@ use crate::vertices::user::User;
 
 use super::DbEdge;
 
-pub struct KnowsE {
+pub struct KnowsEdge {
     ids: (i64, i64),
 }
 
-impl KnowsE {
+impl KnowsEdge {
     pub fn new(source: &User, target: &User) -> Self {
-        KnowsE {
+        KnowsEdge {
             ids: (source.id, target.id),
         }
     }
 }
 
-impl DbEdge<User, User> for KnowsE {
+impl DbEdge<User, User> for KnowsEdge {
     fn label(&self) -> &'static str {
         "knows"
     }
