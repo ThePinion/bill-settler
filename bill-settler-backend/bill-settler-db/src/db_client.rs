@@ -1,7 +1,8 @@
-use gremlin_client::{
-    process::traversal::{GraphTraversalSource, SyncTerminator},
-    GremlinError,
-};
+use gremlin_client::process::traversal::{GraphTraversalSource, SyncTerminator};
+
+use crate::{edges::DbEdge, error::DbError, vertices::DbVertex};
+
+pub type PropPair<'a> = (String, &'a str);
 
 pub struct DbClient {
     pub traversal: GraphTraversalSource<SyncTerminator>,
@@ -13,15 +14,51 @@ impl DbClient {
     }
 }
 
-#[derive(Debug)]
-pub enum DbError {
-    Unexpected,
-    NotUnique((String, String)),
-    Gremlin(GremlinError),
-}
+impl DbClient {
+    pub fn add_vertex<T>(&self, props: Vec<PropPair>) -> Result<T, DbError>
+    where
+        T: DbVertex,
+        DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
+    {
+        let vertex = self
+            .traversal
+            .add_v(T::g_label())
+            .property_many(props)
+            .value_map(true)
+            .next()?
+            .ok_or(DbError::Unexpected)?;
 
-impl From<GremlinError> for DbError {
-    fn from(e: GremlinError) -> Self {
-        DbError::Gremlin(e)
+        Ok(T::try_from(vertex)?)
+    }
+
+    pub fn add_edge<S: DbVertex, T: DbVertex, E: DbEdge<S, T>>(
+        &self,
+        edge: E,
+    ) -> Result<(), DbError> {
+        self.traversal
+            .v(edge.source_id())
+            .as_("s")
+            .v(edge.target_id())
+            .as_("t")
+            .add_e(edge.label())
+            .next()
+            .unwrap();
+        Ok(())
+    }
+
+    pub fn get_all<T>(&self) -> Result<Vec<T>, DbError>
+    where
+        T: DbVertex,
+        DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
+    {
+        Ok(self
+            .traversal
+            .v(())
+            .value_map(true)
+            .iter()?
+            .filter_map(Result::ok)
+            .map(T::try_from)
+            .filter_map(Result::ok)
+            .collect::<Vec<_>>())
     }
 }

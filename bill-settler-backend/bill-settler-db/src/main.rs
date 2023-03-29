@@ -1,16 +1,18 @@
-use gremlin_client::{
-    derive::{FromGMap, FromGValue},
-    process::traversal::traversal,
-    ConnectionOptions, GremlinClient,
-};
+use edges::knows::KnowsE;
+use error::DbError;
+use gremlin_client::derive::{FromGMap, FromGValue};
 
 use crate::{
-    db_client::DbClient,
-    models::user::{PasswordUser, User},
+    services::{user::UserServiceT, DbService, DbServiceT},
+    vertices::user::PasswordUser,
 };
 
 mod db_client;
-mod models;
+mod edges;
+mod error;
+mod services;
+mod utils;
+mod vertices;
 
 #[derive(Debug, PartialEq, FromGValue, FromGMap)]
 struct TestVertex {
@@ -18,32 +20,19 @@ struct TestVertex {
     name: Option<String>,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let options = ConnectionOptions::builder()
-        .host("localhost")
-        .port(8182)
-        .build();
+fn main() -> Result<(), DbError> {
+    let db_service = DbService::new_use_config("localhost", 8182);
 
-    let client = GremlinClient::connect(options).expect("Can connect");
+    let user_service = db_service.user_service();
+    user_service.add_user(PasswordUser::new("1@test.pl", "1", "secret"))?;
+    user_service.add_user(PasswordUser::new("2@test.pl", "2", "secret"))?;
+    user_service.add_user(PasswordUser::new("3@test.pl", "3", "secret"))?;
 
-    let g = traversal().with_remote(client);
+    let users = user_service.get_all_users()?;
+    let edge = KnowsE::new(&users[0], &users[1]);
+    user_service.add_know_edge(edge)?;
 
-    let client = DbClient::new(g.clone());
-
-    let new_user = client.add_user(PasswordUser::new("2@test.pl", "2", "secret"));
-
-    println!("{:?}", new_user);
-
-    let results = g
-        .v(())
-        .value_map(true)
-        .iter()?
-        .filter_map(Result::ok)
-        .map(User::try_from)
-        .filter_map(Result::ok)
-        .collect::<Vec<_>>();
-
-    println!("{:#?}", results);
+    // println!("{:#?}", results);
 
     Ok(())
 }
