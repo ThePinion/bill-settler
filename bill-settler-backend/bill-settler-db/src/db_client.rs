@@ -13,8 +13,10 @@ impl DbClient {
     }
 }
 
+#[derive(Debug)]
 pub enum DbError {
-    NotUnique,
+    Unexpected,
+    NotUnique((String, String)),
     Gremlin(GremlinError),
 }
 

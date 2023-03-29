@@ -1,7 +1,12 @@
 use gremlin_client::{
     derive::{FromGMap, FromGValue},
     process::traversal::traversal,
-    ConnectionOptions, GremlinClient, Vertex,
+    ConnectionOptions, GremlinClient,
+};
+
+use crate::{
+    db_client::DbClient,
+    models::user::{PasswordUser, User},
 };
 
 mod db_client;
@@ -23,13 +28,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let g = traversal().with_remote(client);
 
+    let client = DbClient::new(g.clone());
+
+    let new_user = client.add_user(PasswordUser::new("2@test.pl", "2", "secret"));
+
+    println!("{:?}", new_user);
+
     let results = g
         .v(())
         .value_map(true)
         .iter()?
         .filter_map(Result::ok)
-        .map(TestVertex::try_from)
-        .collect::<Result<Vec<_>, _>>()?;
+        .map(User::try_from)
+        .filter_map(Result::ok)
+        .collect::<Vec<_>>();
 
     println!("{:#?}", results);
 
