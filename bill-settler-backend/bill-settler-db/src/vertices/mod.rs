@@ -8,7 +8,7 @@ pub trait DbLabel {
 }
 
 pub trait DbVertex:
-    TryFrom<gremlin_client::GValue> + TryFrom<gremlin_client::Map> + DbLabel + Sized
+    TryFrom<gremlin_client::GValue> + TryFrom<gremlin_client::Map> + DbLabel
 {
     fn id(&self) -> i64;
 }
@@ -24,7 +24,7 @@ pub trait DbSavable {
 
 impl<T> DbRetrieveSavable<T> for T
 where
-    T: DbVertex + DbSavable + Sized,
+    T: DbVertex + DbSavable,
     Self: Sized,
 {
 }

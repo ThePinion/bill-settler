@@ -1,18 +1,28 @@
-// #[macro_export]
-// macro_rules! derive_entity {
-//     ($strct:ident) => {
-//         use crate::vertices::DbVertex;
-//         impl DbVertex for $strct {
-//             fn g_label() -> &'static str {
-//                 stringify!($strct)
-//             }
+#[macro_export]
+macro_rules! derive_label {
+    ($strct:ident, $label:ident) => {
+        impl crate::vertices::DbLabel for $strct {
+            fn g_label() -> &'static str {
+                stringify!($label)
+            }
+        }
+    };
+    ($label:ident) => {
+        crate::derive_label!($label, $label);
+    };
+}
 
-//             fn id(&self) -> i64 {
-//                 self.id
-//             }
-//         }
-//     };
-// }
+#[macro_export]
+macro_rules! derive_vertex {
+    ($vertex:ident) => {
+        crate::derive_label!($vertex);
+        impl crate::vertices::DbVertex for $vertex {
+            fn id(&self) -> i64 {
+                self.id
+            }
+        }
+    };
+}
 #[macro_export]
 macro_rules! unique_fields {
     ($traversal:expr, $strct:ident; $($x:expr),*) => {

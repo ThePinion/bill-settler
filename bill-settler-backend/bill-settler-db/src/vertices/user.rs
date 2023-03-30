@@ -1,11 +1,14 @@
-use crate::db_client::{PredicatePair, PropPair};
+use crate::{
+    db_client::{PredicatePair, PropPair},
+    derive_vertex,
+};
 
 use gremlin_client::{
     derive::{FromGMap, FromGValue},
     GValue,
 };
 
-use super::{DbLabel, DbRetrieveSavable, DbSavable, DbVertex};
+use super::{DbLabel, DbRetrieveSavable, DbSavable};
 
 #[derive(Debug, PartialEq, FromGValue, FromGMap)]
 pub struct User {
@@ -24,17 +27,19 @@ impl From<PasswordUser> for User {
     }
 }
 
-impl DbLabel for User {
-    fn g_label() -> &'static str {
-        return stringify!(User).into();
-    }
-}
+derive_vertex!(User);
 
-impl DbVertex for User {
-    fn id(&self) -> i64 {
-        return self.id;
-    }
-}
+// impl DbLabel for User {
+//     fn g_label() -> &'static str {
+//         return stringify!(User).into();
+//     }
+// }
+
+// impl DbVertex for User {
+//     fn id(&self) -> i64 {
+//         return self.id;
+//     }
+// }
 
 #[derive(Clone)]
 pub struct PasswordUser {
