@@ -11,11 +11,23 @@ use crate::{
     vertices::{DbLabel, DbRetrieveSavable, DbSavable, DbVertex},
 };
 
+pub type PropPair = (String, GValue);
+
+pub trait IntoPropPair {
+    fn into_pair(self) -> PropPair;
+}
+
+impl<T> IntoPropPair for (&'static str, T)
+where
+    GValue: From<T>,
+{
+    fn into_pair(self) -> PropPair {
+        (self.0.into(), self.1.into())
+    }
+}
+
 #[derive(Clone)]
 pub struct GValueHolder(GValue);
-
-pub type PropPair = (String, GValue);
-pub type PredicatePair = (String, GValueHolder);
 
 //This is stupid but it suposedly has to be that way
 impl ToGValue for GValueHolder {
@@ -66,20 +78,6 @@ impl DbClient {
         D: DbRetrieveSavable<T>,
         T: DbVertex,
     {
-        for prop in vertex.g_unique_props() {
-            match self
-                .traversal
-                .v(())
-                .has_label(T::g_label())
-                .has(prop.clone())
-                .count()
-                .next()?
-            {
-                None | Some(0) => (),
-                Some(_) => return Err(DbError::NotUnique(prop)),
-            }
-        }
-
         let vertex = self
             .traversal
             .add_v(T::g_label())

@@ -1,9 +1,6 @@
-use gremlin_client::{
-    derive::{FromGMap, FromGValue},
-    GValue,
-};
+use gremlin_client::derive::{FromGMap, FromGValue};
 
-use crate::db_client::{PredicatePair, PropPair};
+use crate::db_client::{IntoPropPair, PropPair};
 
 use super::{DbLabel, DbSavable, DbVertex};
 
@@ -27,13 +24,6 @@ impl DbVertex for Group {
 
 impl DbSavable for Group {
     fn g_props(&self) -> Vec<PropPair> {
-        vec![(stringify!(name).into(), GValue::String(self.name.clone()))]
-    }
-
-    fn g_unique_props(&self) -> Vec<PredicatePair> {
-        vec![(
-            stringify!(name).into(),
-            GValue::String(self.name.clone()).into(),
-        )]
+        vec![(stringify!(name), &self.name.clone()).into_pair()]
     }
 }

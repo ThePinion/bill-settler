@@ -4,8 +4,8 @@ use super::{date_props::DateProps, DbEdge};
 
 pub type TrustsEdge = DbEdge<User, DateProps, User, Trusts>;
 
-pub struct Trusts {}
 derive_label!(Trusts);
+pub struct Trusts {}
 
 impl TrustsEdge {
     pub fn new(s_id: i64, t_id: i64) -> Self {

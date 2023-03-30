@@ -1,4 +1,4 @@
-use crate::db_client::{PredicatePair, PropPair};
+use crate::db_client::PropPair;
 
 pub mod group;
 pub mod user;
@@ -17,9 +17,6 @@ pub trait DbRetrieveSavable<T: DbVertex>: DbSavable + DbLabel {}
 
 pub trait DbSavable {
     fn g_props(&self) -> Vec<PropPair>;
-    fn g_unique_props(&self) -> Vec<PredicatePair> {
-        vec![]
-    }
 }
 
 impl<T> DbRetrieveSavable<T> for T
