@@ -1,5 +1,6 @@
 use crate::db_client::{PredicatePair, PropPair};
 
+pub mod group;
 pub mod user;
 
 pub trait DbLabel {
@@ -7,12 +8,23 @@ pub trait DbLabel {
 }
 
 pub trait DbVertex:
-    TryFrom<gremlin_client::GValue> + TryFrom<gremlin_client::Map> + DbLabel
+    TryFrom<gremlin_client::GValue> + TryFrom<gremlin_client::Map> + DbLabel + Sized
 {
     fn id(&self) -> i64;
 }
 
-pub trait DbSavable<T: DbVertex>: DbLabel {
+pub trait DbRetrieveSavable<T: DbVertex>: DbSavable + DbLabel {}
+
+pub trait DbSavable {
     fn g_props(&self) -> Vec<PropPair>;
-    fn g_unique_props(&self) -> Vec<PredicatePair>;
+    fn g_unique_props(&self) -> Vec<PredicatePair> {
+        vec![]
+    }
+}
+
+impl<T> DbRetrieveSavable<T> for T
+where
+    T: DbVertex + DbSavable + Sized,
+    Self: Sized,
+{
 }

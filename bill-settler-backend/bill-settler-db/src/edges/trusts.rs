@@ -1,39 +1,19 @@
-use std::time::SystemTime;
+use crate::vertices::{user::User, DbLabel};
 
-use gremlin_client::GValue;
+use super::{date_props::DateProps, DbEdge};
 
-use crate::{date::Date, db_client::PropPair, vertices::user::User};
+pub type TrustsEdge = DbEdge<User, DateProps, User, Trusts>;
 
-use super::DbEdge;
+pub struct Trusts {}
 
-pub struct TrustsEdge {
-    ids: (i64, i64),
-    date: Date,
+impl DbLabel for Trusts {
+    fn g_label() -> &'static str {
+        stringify!(Trusts)
+    }
 }
 
 impl TrustsEdge {
-    pub fn new(source: &User, target: &User) -> Self {
-        TrustsEdge {
-            ids: (source.id, target.id),
-            date: Date::from(SystemTime::now()),
-        }
-    }
-}
-
-impl DbEdge<User, User> for TrustsEdge {
-    fn g_label(&self) -> &'static str {
-        "knows"
-    }
-
-    fn g_source_id(&self) -> i64 {
-        self.ids.0
-    }
-
-    fn g_target_id(&self) -> i64 {
-        self.ids.1
-    }
-
-    fn g_props(&self) -> Vec<PropPair> {
-        vec![(stringify!(date).to_string(), GValue::Date(self.date))]
+    pub fn new(s_id: i64, t_id: i64) -> Self {
+        TrustsEdge::_new(s_id, t_id, DateProps::now())
     }
 }

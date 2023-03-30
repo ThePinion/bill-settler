@@ -29,11 +29,13 @@ fn main() -> Result<(), DbError> {
     ];
 
     for user in new_users {
-        let _ = db_service.add_vertex::<PasswordUser, User>(user);
+        if let Err(e) = db_service.add_vertex::<PasswordUser, User>(user) {
+            println!("{:?}", e)
+        }
     }
 
     let users = db_service.get_all::<User>()?;
-    let edge = TrustsEdge::new(&users[0], &users[1]);
+    let edge = TrustsEdge::new(users[0].id, users[1].id);
     db_service.add_edge(edge)?;
 
     // println!("{:#?}", results);

@@ -8,10 +8,10 @@ use gremlin_client::{
 use crate::{
     edges::DbEdge,
     error::{DbError, DbResult},
-    vertices::{DbSavable, DbVertex},
+    vertices::{DbLabel, DbRetrieveSavable, DbSavable, DbVertex},
 };
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct GValueHolder(GValue);
 
 pub type PropPair = (String, GValue);
@@ -30,6 +30,12 @@ where
 {
     fn from(v: T) -> Self {
         Self(v.into())
+    }
+}
+
+impl Debug for GValueHolder {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        return self.0.fmt(f);
     }
 }
 
@@ -57,7 +63,7 @@ impl DbClient {
     pub fn add_vertex<D, T>(&self, vertex: D) -> DbResult<T>
     where
         DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
-        D: DbSavable<T>,
+        D: DbRetrieveSavable<T>,
         T: DbVertex,
     {
         for prop in vertex.g_unique_props() {
@@ -85,14 +91,20 @@ impl DbClient {
         Ok(T::try_from(vertex)?)
     }
 
-    pub fn add_edge<S: DbVertex, T: DbVertex, E: DbEdge<S, T>>(&self, edge: E) -> DbResult<()> {
+    pub fn add_edge<S, P, T, L>(&self, edge: DbEdge<S, P, T, L>) -> DbResult<()>
+    where
+        S: DbVertex,
+        T: DbVertex,
+        P: DbSavable,
+        L: DbLabel,
+    {
         self.traversal
-            .v(edge.g_source_id())
+            .v(edge.source_id)
             .as_("s")
-            .v(edge.g_target_id())
+            .v(edge.target_id)
             .as_("t")
-            .add_e(edge.g_label())
-            .property_many(edge.g_props())
+            .add_e(DbEdge::<S, P, T, L>::g_label())
+            .property_many(edge.props.g_props())
             .next()
             .unwrap();
         Ok(())

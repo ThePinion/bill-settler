@@ -5,7 +5,7 @@ use gremlin_client::{
     GValue,
 };
 
-use super::{DbLabel, DbSavable, DbVertex};
+use super::{DbLabel, DbRetrieveSavable, DbSavable, DbVertex};
 
 #[derive(Debug, PartialEq, FromGValue, FromGMap)]
 pub struct User {
@@ -59,7 +59,7 @@ impl DbLabel for PasswordUser {
     }
 }
 
-impl DbSavable<User> for PasswordUser {
+impl DbSavable for PasswordUser {
     fn g_props(&self) -> Vec<PropPair> {
         vec![
             (stringify!(email).into(), GValue::String(self.email.clone())),
@@ -81,3 +81,5 @@ impl DbSavable<User> for PasswordUser {
         ]
     }
 }
+
+impl DbRetrieveSavable<User> for PasswordUser {}
