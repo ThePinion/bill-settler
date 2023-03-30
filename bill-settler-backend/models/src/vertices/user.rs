@@ -1,14 +1,8 @@
-use crate::{
-    db_client::{IntoPropPair, PropPair},
-    derive_label, derive_vertex,
-};
-
+use database::vertex::DbRetrieveSavable;
+use database_macro::{DbLabel, DbSavable, DbVertex};
 use gremlin_client::derive::{FromGMap, FromGValue};
 
-use super::{DbRetrieveSavable, DbSavable};
-
-derive_vertex!(User);
-#[derive(Debug, PartialEq, FromGValue, FromGMap)]
+#[derive(Debug, PartialEq, FromGValue, FromGMap, DbLabel, DbVertex)]
 pub struct User {
     pub id: i64,
     pub email: String,
@@ -25,8 +19,8 @@ impl From<PasswordUser> for User {
     }
 }
 
-derive_label!(PasswordUser, User);
-#[derive(Clone)]
+#[derive(Clone, DbSavable, DbLabel)]
+#[DbLabel = "User"]
 pub struct PasswordUser {
     pub email: String,
     pub handle: String,
@@ -40,16 +34,6 @@ impl PasswordUser {
             handle: handle.into(),
             password: password.into(),
         }
-    }
-}
-
-impl DbSavable for PasswordUser {
-    fn g_props(&self) -> Vec<PropPair> {
-        vec![
-            (stringify!(email), &self.email).into_pair(),
-            (stringify!(handle), &self.handle).into_pair(),
-            (stringify!(password), &self.password).into_pair(),
-        ]
     }
 }
 

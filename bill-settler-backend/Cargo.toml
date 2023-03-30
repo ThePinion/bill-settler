@@ -1,2 +1,2 @@
 [workspace]
-members = ["bill-settler-db"]
+members = ["database", "models"]

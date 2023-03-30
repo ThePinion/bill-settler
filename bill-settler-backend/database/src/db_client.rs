@@ -1,55 +1,14 @@
-use std::fmt::Debug;
-
 use gremlin_client::{
     process::traversal::{traversal, GraphTraversalSource, SyncTerminator},
-    ConnectionOptions, GValue, GremlinClient, ToGValue,
+    ConnectionOptions, GremlinClient,
 };
 
 use crate::{
-    edges::DbEdge,
+    edge::DbEdge,
+    entity::{DbLabel, DbSavable},
     error::{DbError, DbResult},
-    vertices::{DbLabel, DbRetrieveSavable, DbSavable, DbVertex},
+    vertex::{DbRetrieveSavable, DbVertex},
 };
-
-pub type PropPair = (String, GValue);
-
-pub trait IntoPropPair {
-    fn into_pair(self) -> PropPair;
-}
-
-impl<T> IntoPropPair for (&'static str, T)
-where
-    GValue: From<T>,
-{
-    fn into_pair(self) -> PropPair {
-        (self.0.into(), self.1.into())
-    }
-}
-
-#[derive(Clone)]
-pub struct GValueHolder(GValue);
-
-//This is stupid but it suposedly has to be that way
-impl ToGValue for GValueHolder {
-    fn to_gvalue(&self) -> GValue {
-        self.0.clone()
-    }
-}
-
-impl<T> From<T> for GValueHolder
-where
-    GValue: From<T>,
-{
-    fn from(v: T) -> Self {
-        Self(v.into())
-    }
-}
-
-impl Debug for GValueHolder {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        return self.0.fmt(f);
-    }
-}
 
 pub struct DbClient {
     pub traversal: GraphTraversalSource<SyncTerminator>,
@@ -72,7 +31,7 @@ impl DbClient {
 }
 
 impl DbClient {
-    pub fn add_vertex<D, T>(&self, vertex: D) -> DbResult<T>
+    pub fn add_vertex_retrieve<D, T>(&self, vertex: D) -> DbResult<T>
     where
         DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
         D: DbRetrieveSavable<T>,
@@ -80,7 +39,7 @@ impl DbClient {
     {
         let vertex = self
             .traversal
-            .add_v(T::g_label())
+            .add_v(D::g_label())
             .property_many(vertex.g_props())
             .value_map(true)
             .next()?
@@ -108,7 +67,7 @@ impl DbClient {
         Ok(())
     }
 
-    pub fn get_all<T>(&self) -> DbResult<Vec<T>>
+    pub fn get_all_vertices<T>(&self) -> DbResult<Vec<T>>
     where
         T: DbVertex,
         DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
@@ -116,6 +75,7 @@ impl DbClient {
         Ok(self
             .traversal
             .v(())
+            .has_label(T::g_label())
             .value_map(true)
             .iter()?
             .filter_map(Result::ok)

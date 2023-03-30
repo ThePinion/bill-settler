@@ -1,9 +1,9 @@
 use std::marker::PhantomData;
 
-use crate::vertices::{DbLabel, DbSavable, DbVertex};
-
-pub mod date_props;
-pub mod trusts;
+use crate::{
+    entity::{DbLabel, DbSavable},
+    vertex::DbVertex,
+};
 
 pub struct DbEdge<S, P, T, L>
 where
