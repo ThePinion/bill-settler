@@ -2,8 +2,9 @@ use std::time::SystemTime;
 
 use database::date::Date;
 use database_macro::DbSavable;
+use gremlin_client::derive::FromGMap;
 
-#[derive(DbSavable)]
+#[derive(DbSavable, FromGMap)]
 pub struct DateProps {
     date: Date,
 }

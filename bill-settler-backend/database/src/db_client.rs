@@ -4,10 +4,9 @@ use gremlin_client::{
 };
 
 use crate::{
-    edge::DbEdge,
-    entity::{DbLabel, DbSavable},
+    edge::{DbEdge, DbEdgeMap},
     error::{DbError, DbResult},
-    vertex::{DbRetrieveSavable, DbVertex},
+    vertex::{DbSavableV, DbVertex},
 };
 
 pub struct DbClient {
@@ -31,10 +30,10 @@ impl DbClient {
 }
 
 impl DbClient {
-    pub fn add_vertex_retrieve<D, T>(&self, vertex: D) -> DbResult<T>
+    pub fn add_vertex_r<D, T>(&self, vertex: D) -> DbResult<T>
     where
         DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
-        D: DbRetrieveSavable<T>,
+        D: DbSavableV<T>,
         T: DbVertex,
     {
         let vertex = self
@@ -48,23 +47,34 @@ impl DbClient {
         Ok(T::try_from(vertex)?)
     }
 
-    pub fn add_edge<S, P, T, L>(&self, edge: DbEdge<S, P, T, L>) -> DbResult<()>
+    pub fn add_edge_r<T>(&self, edge: T) -> DbResult<T>
     where
-        S: DbVertex,
-        T: DbVertex,
-        P: DbSavable,
-        L: DbLabel,
+        T: DbEdge,
+        DbError: From<<T as TryFrom<DbEdgeMap>>::Error>,
     {
-        self.traversal
-            .v(edge.source_id)
-            .as_("s")
-            .v(edge.target_id)
-            .as_("t")
-            .add_e(DbEdge::<S, P, T, L>::g_label())
-            .property_many(edge.props.g_props())
-            .next()
-            .unwrap();
-        Ok(())
+        const SOURCE: &str = "SOURCE";
+        const TARGET: &str = "TARGET";
+        println!("{}->{}", edge.source_id(), edge.target_id());
+        let output = self
+            .traversal
+            .v(edge.source_id())
+            .as_(SOURCE)
+            .v(edge.target_id())
+            .as_(TARGET)
+            .add_e(T::g_label())
+            .from(SOURCE)
+            .to(TARGET)
+            .property_many(edge.g_props())
+            .value_map(())
+            .next()?;
+        match output {
+            Some(map) => Ok(T::try_from(DbEdgeMap::new(
+                edge.source_id(),
+                edge.target_id(),
+                map,
+            ))?),
+            None => Err(DbError::NotCreated),
+        }
     }
 
     pub fn get_all_vertices<T>(&self) -> DbResult<Vec<T>>

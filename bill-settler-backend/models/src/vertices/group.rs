@@ -1,17 +1,14 @@
-use database::{entity::DbSavable, prop::PropPair};
-use gremlin_client::derive::{FromGMap, FromGValue};
+use database_macro::{DbLabel, DbSavable, DbVertex};
+use gremlin_client::derive::FromGMap;
 
-#[derive(Debug, PartialEq, FromGValue, FromGMap)]
+#[derive(Debug, PartialEq, FromGMap, DbSavable, DbLabel, DbVertex)]
 pub struct Group {
     pub id: i64,
     pub name: String,
 }
 
-impl DbSavable for Group {
-    fn g_props(&self) -> Vec<PropPair> {
-        vec![database::prop::IntoPropPair::into_pair((
-            stringify!(name),
-            &self.name,
-        ))]
+impl Group {
+    pub fn new(name: String) -> Self {
+        Group { id: 0, name: name }
     }
 }

@@ -6,6 +6,7 @@ pub type DbResult<T> = core::result::Result<T, DbError>;
 pub enum DbError {
     Unexpected,
     Gremlin(GremlinError),
+    NotCreated,
 }
 
 impl From<GremlinError> for DbError {

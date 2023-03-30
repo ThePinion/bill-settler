@@ -1,4 +1,4 @@
-use database::vertex::DbRetrieveSavable;
+use database::vertex::DbSavableV;
 use database_macro::{DbLabel, DbSavable, DbVertex};
 use gremlin_client::derive::{FromGMap, FromGValue};
 
@@ -37,4 +37,4 @@ impl PasswordUser {
     }
 }
 
-impl DbRetrieveSavable<User> for PasswordUser {}
+impl DbSavableV<User> for PasswordUser {}

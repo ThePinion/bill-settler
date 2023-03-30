@@ -1,13 +1,14 @@
-use std::{
-    fmt::{Debug, Formatter},
-    time::SystemTime,
-};
+use std::time::SystemTime;
 
 use database::{db_client::DbClient, error::DbError};
+use edges::trusts::Trusts;
 
 use crate::{
-    edges::trusts::TrustsEdge,
-    vertices::user::{PasswordUser, User},
+    edges::created::Created,
+    vertices::{
+        group::Group,
+        user::{PasswordUser, User},
+    },
 };
 
 pub mod edges;
@@ -23,14 +24,15 @@ fn main() -> Result<(), DbError> {
     ];
 
     for user in new_users {
-        if let Err(e) = db_service.add_vertex_retrieve(user) {
-            println!("{:?}", e)
-        }
+        println!("{:?}", db_service.add_vertex_r(user))
     }
 
     let users = db_service.get_all_vertices::<User>()?;
-    let edge = TrustsEdge::new(users[0].id, users[1].id);
-    db_service.add_edge(edge.0)?;
+    let group = db_service.add_vertex_r(Group::new("FirstGroup".into()))?;
+    let _created = db_service.add_edge_r(Created::new(users[0].id, group.id));
+    // TO BE CONTINUED
+    let trusts = db_service.add_edge_r(Trusts::new(users[0].id, users[1].id))?;
+    println!("{:?}", trusts);
 
     Ok(())
 }

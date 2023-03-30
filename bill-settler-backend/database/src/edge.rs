@@ -1,52 +1,24 @@
-use std::marker::PhantomData;
+use crate::entity::{DbLabel, DbSavable};
 
-use crate::{
-    entity::{DbLabel, DbSavable},
-    vertex::DbVertex,
-};
-
-pub struct DbEdge<S, P, T, L>
-where
-    S: DbVertex,
-    T: DbVertex,
-    P: DbSavable,
-    L: DbLabel,
-{
+pub struct DbEdgeMap {
     pub source_id: i64,
     pub target_id: i64,
-    pub props: P,
-    _source_phantom: PhantomData<S>,
-    _target_phantom: PhantomData<T>,
-    _label_phantom: PhantomData<L>,
+    pub properties: gremlin_client::Map,
 }
 
-impl<S, P, T, L> DbEdge<S, P, T, L>
-where
-    S: DbVertex,
-    T: DbVertex,
-    P: DbSavable,
-    L: DbLabel,
-{
-    pub fn _new(s_id: i64, t_id: i64, props: P) -> Self {
-        DbEdge {
-            source_id: s_id,
-            target_id: t_id,
-            props: props,
-            _source_phantom: PhantomData,
-            _target_phantom: PhantomData,
-            _label_phantom: PhantomData,
+impl DbEdgeMap {
+    pub fn new(source_id: i64, target_id: i64, properties: gremlin_client::Map) -> DbEdgeMap {
+        DbEdgeMap {
+            source_id,
+            target_id,
+            properties,
         }
     }
 }
 
-impl<S, P, T, L> DbLabel for DbEdge<S, P, T, L>
-where
-    S: DbVertex,
-    T: DbVertex,
-    P: DbSavable,
-    L: DbLabel,
-{
-    fn g_label() -> &'static str {
-        L::g_label()
-    }
+pub trait DbSavableE: DbSavable {}
+
+pub trait DbEdge: TryFrom<DbEdgeMap> + DbLabel + DbSavableE {
+    fn source_id(&self) -> i64;
+    fn target_id(&self) -> i64;
 }
