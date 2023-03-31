@@ -9,3 +9,6 @@ A utility macro library that easily derives the traits necessary for common stru
 
 ## Models
 These models are stored in the database and are basically wrappers for Gremlin structures (vertices and edges).
+
+## Services
+Underlying logic.
