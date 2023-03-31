@@ -1,6 +1,9 @@
 use database::{db_client::DbClient, error::DbResult};
 use models::{
-    edges::{belongs_to::BelongsTo, created::Created, is::Is, paid_expense::PaidExpense},
+    edges::{
+        belongs_to::BelongsTo, created::Created, is::Is, owes_expense_schema::OwesExpenseSchema,
+        paid_expense::PaidExpense,
+    },
     vertices::{expense::Expense, group::Group, group_person::GroupPerson, user::User},
 };
 
@@ -60,6 +63,16 @@ impl<'a> GroupService<'a> {
                 request.group_person_id,
                 expense.id,
             ))?;
+
+        match request.schema {
+            //Stupid but simple so it's the only one implemented:))
+            new_expense::ExpenseSchema::PayerOnly => {
+                self.client.add_edge_r::<_, GroupPerson, Expense>(
+                    OwesExpenseSchema::with_fraction(request.group_person_id, expense.id, 1.0),
+                )?
+            }
+            _ => todo!("Not implemented!"),
+        };
 
         Ok(expense)
     }

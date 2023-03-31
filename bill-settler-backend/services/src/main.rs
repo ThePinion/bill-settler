@@ -2,7 +2,11 @@ use database::{db_client::DbClient, error::DbError};
 use models::vertices::user::PasswordUser;
 
 use crate::{
-    group_service::{new_expense::NewExpense, new_group_person::NewGroupPerson, GroupService},
+    group_service::{
+        new_expense::{ExpenseSchema, NewExpense},
+        new_group_person::NewGroupPerson,
+        GroupService,
+    },
     user_service::UserService,
 };
 
@@ -34,6 +38,7 @@ fn main() -> Result<(), DbError> {
         group_person_id: person.id,
         creator_id: users[0].id,
         amount: 15.0,
+        schema: ExpenseSchema::PayerOnly,
     })?;
     println!("{:?}", expense);
 
