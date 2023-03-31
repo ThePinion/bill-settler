@@ -18,7 +18,7 @@ impl DbClient {
         return Self { traversal };
     }
 
-    pub fn new_use_config(host: &str, port: u16) -> Self {
+    pub fn with_config(host: &str, port: u16) -> Self {
         let options = ConnectionOptions::builder().host(host).port(port).build();
 
         let client = GremlinClient::connect(options).expect("Can connect");

@@ -17,7 +17,8 @@ Underlying logic (Model creation, relation(edges) management)
 + Add a unique_props trait and macro derivations to ensure the uniqueness of vertices and edges.
 + Modify the macros to use helper attributes instead of hardcoded values (id, source_id). Necessary for unique props derivation.
 + Implement missing models (transfer, curency, group_person, person_expense etc.).
++ Allow for simple traversals inside DbClient -> eg. Get all expenses in a group. 
 + Think heavily about splitting the bill and transitioning between a splitting schema to the absolute values (take into account a possible currency exchange).
-+ Implement missing services 
-+ Implement API
++ Implement missing services .
++ Implement API.
 + Think about a database for messaging.

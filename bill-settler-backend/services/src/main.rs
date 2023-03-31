@@ -12,7 +12,7 @@ pub mod group_service;
 pub mod user_service;
 
 fn main() -> Result<(), DbError> {
-    let db_client = DbClient::new_use_config("localhost", 8182);
+    let db_client = DbClient::with_config("localhost", 8182);
 
     let user_service = UserService::new(&db_client);
     let group_service = GroupService::new(&db_client);

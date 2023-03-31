@@ -35,7 +35,10 @@ pub fn impl_db_edge(ast: syn::DeriveInput) -> TokenStream {
         })
         .collect::<Vec<_>>();
 
-    let intermediate = Ident::new(&format!("{}Intermediate", struct_name), Span::call_site());
+    let intermediate = Ident::new(
+        &format!("__Macro{}Intermediate", struct_name),
+        Span::call_site(),
+    );
 
     let gen = quote! {
         #[derive(gremlin_client::derive::FromGMap)]
