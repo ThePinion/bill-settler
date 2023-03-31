@@ -7,6 +7,7 @@ pub struct User {
     pub id: i64,
     pub email: String,
     pub handle: String,
+    pub name: String,
 }
 
 impl From<PasswordUser> for User {
@@ -15,6 +16,7 @@ impl From<PasswordUser> for User {
             id: 0,
             email: pu.email,
             handle: pu.handle,
+            name: pu.name,
         }
     }
 }
@@ -25,14 +27,16 @@ pub struct PasswordUser {
     pub email: String,
     pub handle: String,
     pub password: String,
+    pub name: String,
 }
 
 impl PasswordUser {
-    pub fn new(email: &str, handle: &str, password: &str) -> Self {
+    pub fn new(email: &str, handle: &str, password: &str, name: &str) -> Self {
         PasswordUser {
             email: email.into(),
             handle: handle.into(),
             password: password.into(),
+            name: name.into(),
         }
     }
 }

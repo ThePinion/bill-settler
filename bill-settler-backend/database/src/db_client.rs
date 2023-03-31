@@ -47,6 +47,22 @@ impl DbClient {
         Ok(T::try_from(vertex)?)
     }
 
+    pub fn get_vertex<T>(&self, vertex_id: i64) -> DbResult<T>
+    where
+        DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
+        T: DbVertex,
+    {
+        let vertex = self
+            .traversal
+            .v(vertex_id)
+            .has_label(T::g_label())
+            .value_map(true)
+            .next()?
+            .ok_or(DbError::Unexpected)?;
+
+        Ok(T::try_from(vertex)?)
+    }
+
     pub fn add_edge_r<T>(&self, edge: T) -> DbResult<T>
     where
         T: DbEdge,
