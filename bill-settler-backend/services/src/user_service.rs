@@ -16,6 +16,8 @@ impl<'a> UserService<'a> {
         self.client.add_vertex_r(user)
     }
     pub fn trust_users(&self, source_id: i64, target_id: i64) -> DbResult<Trusts> {
-        Ok(self.client.add_edge_r(Trusts::new(source_id, target_id))?)
+        Ok(self
+            .client
+            .add_edge_r::<_, User, User>(Trusts::new(source_id, target_id))?)
     }
 }

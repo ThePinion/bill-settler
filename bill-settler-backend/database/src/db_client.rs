@@ -63,18 +63,22 @@ impl DbClient {
         Ok(T::try_from(vertex)?)
     }
 
-    pub fn add_edge_r<T>(&self, edge: T) -> DbResult<T>
+    pub fn add_edge_r<T, VS, VT>(&self, edge: T) -> DbResult<T>
     where
         T: DbEdge,
         DbError: From<<T as TryFrom<DbEdgeMap>>::Error>,
+        VS: DbVertex,
+        VT: DbVertex,
     {
         const SOURCE: &str = "SOURCE";
         const TARGET: &str = "TARGET";
         let output = self
             .traversal
             .v(edge.source_id())
+            .has_label(VS::g_label())
             .as_(SOURCE)
             .v(edge.target_id())
+            .has_label(VT::g_label())
             .as_(TARGET)
             .add_e(T::g_label())
             .from(SOURCE)

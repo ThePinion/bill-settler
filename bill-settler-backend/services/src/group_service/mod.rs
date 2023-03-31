@@ -22,7 +22,8 @@ impl<'a> GroupService<'a> {
     }
     pub fn add_group(&self, user_id: i64, name: String) -> DbResult<Group> {
         let group = self.client.add_vertex_r(Group::new(name))?;
-        self.client.add_edge_r(Created::new(user_id, group.id))?;
+        self.client
+            .add_edge_r::<_, User, Group>(Created::new(user_id, group.id))?;
         Ok(group)
     }
     pub fn add_group_person(&self, request: NewGroupPerson) -> DbResult<GroupPerson> {
@@ -30,7 +31,8 @@ impl<'a> GroupService<'a> {
             NewGroupPersonAlias::User { user_id } => {
                 let u: User = self.client.get_vertex(user_id)?;
                 let p = self.client.add_vertex_r(GroupPerson::new(u.name))?;
-                self.client.add_edge_r(Is::new(p.id, user_id))?;
+                self.client
+                    .add_edge_r::<_, GroupPerson, User>(Is::new(p.id, user_id))?;
                 p
             }
             NewGroupPersonAlias::NonUser { name } => {
@@ -39,19 +41,22 @@ impl<'a> GroupService<'a> {
         };
 
         self.client
-            .add_edge_r(Created::new(request.creator_id, person.id))?;
+            .add_edge_r::<_, User, GroupPerson>(Created::new(request.creator_id, person.id))?;
 
         self.client
-            .add_edge_r(BelongsTo::new(person.id, request.group_id))?;
+            .add_edge_r::<_, GroupPerson, Group>(BelongsTo::new(person.id, request.group_id))?;
 
         Ok(person)
     }
     pub fn add_expense(&self, request: NewExpense) -> DbResult<Expense> {
         let expense = self.client.add_vertex_r(Expense::new(request.amount))?;
         self.client
-            .add_edge_r(Created::new(request.creator_id, expense.id))?;
+            .add_edge_r::<_, User, Expense>(Created::new(request.creator_id, expense.id))?;
         self.client
-            .add_edge_r(PaidExpense::new(request.group_person_id, expense.id))?;
+            .add_edge_r::<_, GroupPerson, Expense>(PaidExpense::new(
+                request.group_person_id,
+                expense.id,
+            ))?;
 
         Ok(expense)
     }
