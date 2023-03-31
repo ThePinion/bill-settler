@@ -7,5 +7,7 @@ edition = "2021"
 
 [dependencies]
 gremlin-client = { version = "*", features = ["derive"] }
+serde = { version = "*", features = ["derive"] }
+serde_json = "*"
 database = { path = "../database" }
 database-macro = { path = "../database/database-macro" }

@@ -28,13 +28,7 @@ impl<'a> GroupService<'a> {
     }
     pub fn add_group_person(&self, request: NewGroupPerson) -> DbResult<GroupPerson> {
         let person = match request.alias {
-            NewGroupPersonAlias::User { user_id } => {
-                let u: User = self.client.get_vertex(user_id)?;
-                let p = self.client.add_vertex_r(GroupPerson::new(u.name))?;
-                self.client
-                    .add_edge_r::<_, GroupPerson, User>(Is::new(p.id, user_id))?;
-                p
-            }
+            NewGroupPersonAlias::User { user_id } => self.create_person_with_alias(user_id)?,
             NewGroupPersonAlias::NonUser { name } => {
                 self.client.add_vertex_r(GroupPerson::new(name))?
             }
@@ -48,6 +42,15 @@ impl<'a> GroupService<'a> {
 
         Ok(person)
     }
+
+    fn create_person_with_alias(&self, user_id: i64) -> DbResult<GroupPerson> {
+        let u: User = self.client.get_vertex(user_id)?;
+        let p = self.client.add_vertex_r(GroupPerson::new(u.name))?;
+        self.client
+            .add_edge_r::<_, GroupPerson, User>(Is::new(p.id, user_id))?;
+        Ok(p)
+    }
+
     pub fn add_expense(&self, request: NewExpense) -> DbResult<Expense> {
         let expense = self.client.add_vertex_r(Expense::new(request.amount))?;
         self.client

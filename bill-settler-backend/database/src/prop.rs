@@ -8,7 +8,7 @@ pub trait IntoPropPair {
 
 impl<T> IntoPropPair for (&'static str, T)
 where
-    GValue: From<T>,
+    T: Into<GValue>,
 {
     fn into_pair(self) -> PropPair {
         (self.0.into(), self.1.into())
