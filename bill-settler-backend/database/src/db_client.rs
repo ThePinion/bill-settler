@@ -54,7 +54,6 @@ impl DbClient {
     {
         const SOURCE: &str = "SOURCE";
         const TARGET: &str = "TARGET";
-        println!("{}->{}", edge.source_id(), edge.target_id());
         let output = self
             .traversal
             .v(edge.source_id())

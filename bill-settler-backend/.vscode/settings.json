@@ -1,7 +1,8 @@
 {
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#4b2e25",
-        "titleBar.activeBackground": "#695034",
-        "titleBar.activeForeground": "#FCFAFD"
-    }
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#4b2e25",
+    "titleBar.activeBackground": "#695034",
+    "titleBar.activeForeground": "#FCFAFD"
+  },
+  "rust-analyzer.showUnlinkedFileNotification": false
 }
