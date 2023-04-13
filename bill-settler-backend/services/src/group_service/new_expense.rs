@@ -5,6 +5,7 @@ pub struct NewExpense {
     pub schema: ExpenseSchema,
 }
 
+#[derive(Debug, serde::Deserialize)]
 pub enum ExpenseSchema {
     EqualAll,
     EqualPersons(Vec<i64>),

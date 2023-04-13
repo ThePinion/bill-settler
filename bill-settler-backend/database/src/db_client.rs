@@ -9,6 +9,7 @@ use crate::{
     vertex::{DbSavableV, DbVertex},
 };
 
+#[derive(Clone)]
 pub struct DbClient {
     pub traversal: GraphTraversalSource<SyncTerminator>,
 }

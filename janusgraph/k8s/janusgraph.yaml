@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: janusgraph-deployment
+  labels:
+    app: janusgraph-database
+spec:
+  selector:
+    matchLabels:
+      app: janusgraph-database
+  template:
+    metadata:
+      labels:
+        app: janusgraph-database
+    spec:
+      containers:
+      - name: janusgraph-database
+        image: bill-settler-janusgraph
+        ports:
+        - containerPort: 8182
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: janusgraph-service
+spec:
+  selector:
+    app: janusgraph-database
+  ports:
+    - protocol: TCP
+      port: 8182
+      targetPort: 8182

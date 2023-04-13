@@ -1,0 +1,20 @@
+services:
+  janusgraph:
+    container_name: bill-settler-janusgraph
+    hostname: bill-settler-janusgraph
+    build:
+      context: ./janusgraph
+      dockerfile: Dockerfile
+    ports:
+      - 8182:8182
+
+  backend:
+    container_name: bill-settler-backend
+    hostname: bill-settler-backend
+    build:
+      context: ./bill-settler-backend
+      dockerfile: Dockerfile
+    ports:
+      - 0.0.0.0:80:8080
+    depends_on:
+      - janusgraph

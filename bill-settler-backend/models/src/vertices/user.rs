@@ -2,7 +2,7 @@ use database::vertex::DbSavableV;
 use database_macro::{DbLabel, DbSavable, DbVertex};
 use gremlin_client::derive::{FromGMap, FromGValue};
 
-#[derive(Debug, PartialEq, FromGValue, FromGMap, DbLabel, DbVertex)]
+#[derive(Debug, PartialEq, FromGValue, FromGMap, DbLabel, DbVertex, serde::Serialize)]
 pub struct User {
     pub id: i64,
     pub email: String,

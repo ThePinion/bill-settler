@@ -1,7 +1,7 @@
 use database_macro::{DbLabel, DbSavable, DbVertex};
 use gremlin_client::derive::FromGMap;
 
-#[derive(Debug, PartialEq, FromGMap, DbSavable, DbLabel, DbVertex)]
+#[derive(Debug, PartialEq, FromGMap, DbSavable, DbLabel, DbVertex, serde::Serialize)]
 pub struct Group {
     pub id: i64,
     pub name: String,

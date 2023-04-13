@@ -1,3 +1,4 @@
+#[derive(Debug, serde::Deserialize)]
 pub enum NewGroupPersonAlias {
     User { user_id: i64 },
     NonUser { name: String },

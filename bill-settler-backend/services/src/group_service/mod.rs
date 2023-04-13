@@ -15,12 +15,13 @@ use self::{
 pub mod new_expense;
 pub mod new_group_person;
 
-pub struct GroupService<'a> {
-    client: &'a DbClient,
+#[derive(Clone)]
+pub struct GroupService {
+    client: DbClient,
 }
 
-impl<'a> GroupService<'a> {
-    pub fn new(db_client: &'a DbClient) -> Self {
+impl GroupService {
+    pub fn new(db_client: DbClient) -> Self {
         GroupService { client: db_client }
     }
     pub fn add_group(&self, user_id: i64, name: String) -> DbResult<Group> {

@@ -4,12 +4,13 @@ use models::{
     vertices::user::{PasswordUser, User},
 };
 
-pub struct UserService<'a> {
-    client: &'a DbClient,
+#[derive(Clone)]
+pub struct UserService {
+    client: DbClient,
 }
 
-impl<'a> UserService<'a> {
-    pub fn new(db_client: &'a DbClient) -> Self {
+impl UserService {
+    pub fn new(db_client: DbClient) -> Self {
         UserService { client: db_client }
     }
     pub fn add_user(&self, user: PasswordUser) -> DbResult<User> {

@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 database = { path = "../database" }
 models = { path ="../models" }
+serde = { version = "1.0.160", features = ["derive"] }

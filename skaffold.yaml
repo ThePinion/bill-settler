@@ -1,0 +1,16 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+build:
+  artifacts:
+  - image: bill-settler-janusgraph
+    context: ./janusgraph
+    docker:
+      dockerfile: Dockerfile
+  - image: bill-settler-backend
+    context: ./bill-settler-backend
+    docker:
+      dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - ./janusgraph/k8s/*
+    - ./bill-settler-backend/k8s/*
