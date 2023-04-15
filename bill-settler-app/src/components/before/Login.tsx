@@ -26,7 +26,7 @@ export default function Login() {
         <A
           class="text-center block w-full px-4 py-2 mt-4 shadow-md font-bold text-white bg-blue-500 rounded-lg hover:bg-gray-600"
           type="submit"
-          href="/before/login"
+          href="/home"
         >
           Log In
         </A>
