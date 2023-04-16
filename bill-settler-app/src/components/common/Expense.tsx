@@ -17,7 +17,7 @@ export class Expense {
 const ExpenseComponent: Component<{expense: Expense}> = (props) => {
     return(
         <button 
-            class="flex flex-row flex-wrap rounded-xl p-4 m-2 w-96
+            class="flex flex-row flex-wrap rounded-xl p-4 m-2 w-96 shadow-sm
             bg-gray-700 hover:bg-[#253041] transition-all duration-200 hover:rounded-lg"
         >
             <div class="font-semibold flex-auto">{props.expense.name}</div>

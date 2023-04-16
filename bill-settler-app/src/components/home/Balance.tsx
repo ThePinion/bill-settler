@@ -5,7 +5,7 @@ const Balance: Component<{owe: number, owed: number}> = (props) => {
     return(
         <div
             class="flex flew-wrap flex-row bg-gray-700 rounded-xl p-4 gap-2
-            font-semibold"
+            font-semibold shadow-md"
         >
             <h1>You owe</h1>
             <h1>{props.owe}$</h1>
