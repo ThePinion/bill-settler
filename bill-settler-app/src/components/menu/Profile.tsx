@@ -18,11 +18,11 @@ const ProfileComponent: Component<{profile: Profile}> = (props) => {
             text-xl font-bold hover:bg-gray-800 hover:text-teal-700
             transition-all duration-100 rounded-3xl"
         >
-            <div class="w-10 h-10 bg-sky-950 text-teal-700 rounded-3xl p-2">
+            <div class="w-full h-full bg-sky-950 text-teal-700 rounded-3xl p-2">
                 <TbLetterU class="rounded-3xl" size={24}/>
             </div>
             
-            <div class="h-10 p-1 ml-2">
+            <div class="h-full p-1 ml-2">
                 {props.profile.name}
             </div>
         </A>
