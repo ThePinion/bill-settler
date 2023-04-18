@@ -32,7 +32,7 @@ const ExpenseComponent: Component<{expense: Expense}> = (props) => {
             <div class="w-16 text-right font-mono font-semibold text-green-500 text-opacity-80">
                 {props.expense.cost}$
             </div>
-            <div class="w-16 ml-4 text-right text-gray-400">
+            <div class="w-16 ml-6 text-right text-gray-400">
                 {settledString}
             </div>
         </button>

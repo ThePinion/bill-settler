@@ -1,14 +1,15 @@
 import { A } from "@solidjs/router";
-import { Component } from "solid-js";
+import { Component, ParentComponent } from "solid-js";
 
-const MenuElement: Component<{text: string}> = (props) => {
+const MenuElement: ParentComponent<{text: string}> = (props) => {
     let route = '/' + props.text.toLowerCase();
     return(
         <div 
             class="menu-element"
         >
             <A class="w-full" href={route}>
-                <div class="px-4 py-2">
+                <div class="px-4 py-2 flex flex-row items-center gap-3">
+                    {props.children}
                     {props.text}
                 </div>
             </A>

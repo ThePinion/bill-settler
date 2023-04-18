@@ -21,4 +21,8 @@
         @apply items-center justify-center font-semibold py-2 px-4 w-40 shadow-sm
         text-white transition-all duration-200 rounded-3xl hover:rounded-2xl;
     }
+
+    .menu-icon {
+        @apply font-bold h-full;
+    }
 }
