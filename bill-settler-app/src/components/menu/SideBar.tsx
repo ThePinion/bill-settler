@@ -1,5 +1,5 @@
 import MenuElement from "./MenuElement";
-import ProfileComponent, { Profile } from "./Profile";
+import SmallProfileComponent, { Profile } from "./SmallProfile";
 import { BiRegularHomeAlt2 } from 'solid-icons/bi'
 import { AiOutlineDollar } from 'solid-icons/ai'
 import { RiUserGroupLine } from 'solid-icons/ri'
@@ -12,7 +12,7 @@ export default function SideBar() {
             class="w-44 pt-6 flex flex-col
             bg-gray-900 text-white shadow-lg"
         >
-            <ProfileComponent profile={new Profile("User123")}></ProfileComponent>
+            <SmallProfileComponent profile={new Profile("User123")}></SmallProfileComponent>
             <MenuElement text="Home"><BiRegularHomeAlt2 class="menu-icon" size={22} /></MenuElement>
             <MenuElement text="Expenses"><AiOutlineDollar class="menu-icon" size={22} /></MenuElement>
             <MenuElement text="Groups"><RiUserGroupLine class="menu-icon" size={22} /></MenuElement>

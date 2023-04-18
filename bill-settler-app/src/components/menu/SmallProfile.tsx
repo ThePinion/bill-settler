@@ -1,7 +1,6 @@
 import { Component, JSX } from "solid-js";
-import { TbLetterU } from 'solid-icons/tb'
 import { A } from "@solidjs/router";
-import { IconTypes } from "solid-icons";
+import ProfileIcon from "../common/ProfileIcon";
 
 export class Profile {
     name: string;
@@ -11,7 +10,7 @@ export class Profile {
     }
 }
 
-const ProfileComponent: Component<{profile: Profile}> = (props) => {
+const SmallProfileComponent: Component<{profile: Profile}> = (props) => {
     return(
         <A
             href="/profile"
@@ -20,7 +19,7 @@ const ProfileComponent: Component<{profile: Profile}> = (props) => {
             transition-all duration-100 rounded-3xl"
         >
             <div class="aspect-square h-full bg-sky-950 text-teal-700 rounded-3xl p-2">
-                <TbLetterU class="rounded-3xl" size={24}/>
+                <ProfileIcon profileName={props.profile.name}></ProfileIcon>
             </div>
             
             <div class="h-full p-1 ml-2">
@@ -30,11 +29,4 @@ const ProfileComponent: Component<{profile: Profile}> = (props) => {
     );
 }
 
-function getIcon(profile: Profile) : JSX.Element {
-    
-    return(
-        <TbLetterU class="rounded-3xl" size={24}/>
-    );
-}
-
-export default ProfileComponent
+export default SmallProfileComponent
