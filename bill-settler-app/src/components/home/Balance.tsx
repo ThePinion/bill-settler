@@ -8,13 +8,13 @@ const Balance: Component<{owe: number, owed: number}> = (props) => {
             font-semibold shadow-sm"
         >
             <h1>You owe</h1>
-            <h1>{props.owe}$</h1>
+            <h1>{props.owe.toFixed(2)}$</h1>
             <Gap/>
             <h1>You are owed</h1>
-            <h1>{props.owed}$</h1>
+            <h1>{props.owed.toFixed(2)}$</h1>
             <Gap/>
             <h1>Total</h1>
-            <h1>{props.owed - props.owe}$</h1>
+            <h1>{(props.owed - props.owe).toFixed(2)}$</h1>
         </div>
     );
 }

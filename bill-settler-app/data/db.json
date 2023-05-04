@@ -1,0 +1,112 @@
+{
+    "recent-expenses":[
+        {
+            "name": "expense1",
+            "owner": "user123",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "expense2",
+            "owner": "user123",
+            "cost": 5.00,
+            "settled": false
+        },
+        {
+            "name": "expense3",
+            "owner": "user123",
+            "cost": 7.99,
+            "settled": false
+        },
+        {
+            "name": "expense4",
+            "owner": "user123",
+            "cost": 3.30,
+            "settled": false
+        },
+        {
+            "name": "expense5",
+            "owner": "user123",
+            "cost": 5.00,
+            "settled": false
+        }
+    ],
+    "expenses":[
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        }
+    ],
+    "balance": {
+        "owe": 17.30,
+        "owed": 24.10
+    }
+}

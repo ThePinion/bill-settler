@@ -1,5 +1,4 @@
 import { Component } from "solid-js";
-import Gap from "./Gap";
 
 export class Expense {
     public name: string;
@@ -30,7 +29,7 @@ const ExpenseComponent: Component<{expense: Expense}> = (props) => {
                 <div class="font-extralight text-sm">Paid by {props.expense.owner}</div>
             </div>
             <div class="w-16 text-right font-mono font-semibold text-green-500 text-opacity-80">
-                {props.expense.cost}$
+                {props.expense.cost.toFixed(2)}$
             </div>
             <div class="w-16 ml-6 text-right text-gray-400">
                 {settledString}
