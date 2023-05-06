@@ -12,7 +12,6 @@ export class Expense {
         this.cost = cost;
         this.settled = settled;
     }
-
 }
 
 const ExpenseComponent: Component<{expense: Expense}> = (props) => {

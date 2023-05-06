@@ -111,30 +111,39 @@
     },
     "groups": [
         {
+            "id": 123,
             "name": "Summer Trip"
         },
         {
+            "id": 3,
             "name": "Family"
         },
         {
+            "id": 1,
             "name": "Flat"
         },
         {
+            "id": 2,
             "name": "Birthday Party"
         },
         {
+            "id": 4,
             "name": "Test Group 1"
         },
         {
+            "id": 5,
             "name": "Test Group 2"
         },
         {
+            "id": 6,
             "name": "Test Group 3"
         },
         {
+            "id": 7,
             "name": "Test Group 4"
         },
         {
+            "id": 8,
             "name": "Test Group 5"
         }
     ]
