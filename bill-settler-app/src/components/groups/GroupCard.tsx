@@ -14,7 +14,7 @@ const GroupCard: Component<{group: Group}> = (props) => {
         <div
             class="flex items-center justify-center rounded-xl px-12 py-8 shadow-md
             bg-gray-700 hover:bg-[#253041] transition-all duration-200 hover:rounded-lg
-            text-slate-100 hover:text-slate-300"
+            text-slate-100 hover:text-slate-300 h-24"
         >
             <div class="text-lg font-semibold">
                 {props.group.name}

@@ -1,5 +1,6 @@
 import { For, Show, createResource } from "solid-js";
 import GroupCard from "./GroupCard";
+import AddGroupCard from "./AddGroupCard";
 
 const fetchGroups = async () => {
     const res = await fetch('http://localhost:4000/groups')
@@ -21,6 +22,7 @@ export default function GroupsContainer() {
                             <GroupCard group={group}></GroupCard>
                         )}
                     </For>
+                    <AddGroupCard/>
                 </div>
             </Show>
         </div>
