@@ -108,5 +108,34 @@
     "balance": {
         "owe": 17.30,
         "owed": 24.10
-    }
+    },
+    "groups": [
+        {
+            "name": "Summer Trip"
+        },
+        {
+            "name": "Family"
+        },
+        {
+            "name": "Flat"
+        },
+        {
+            "name": "Birthday Party"
+        },
+        {
+            "name": "Test Group 1"
+        },
+        {
+            "name": "Test Group 2"
+        },
+        {
+            "name": "Test Group 3"
+        },
+        {
+            "name": "Test Group 4"
+        },
+        {
+            "name": "Test Group 5"
+        }
+    ]
 }

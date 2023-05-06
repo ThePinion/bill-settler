@@ -1,5 +1,5 @@
 import { Component } from "solid-js"
-import Gap from "../common/Gap";
+import Gap from "./Gap";
 
 const Balance: Component<{owe: number, owed: number}> = (props) => {
     return(

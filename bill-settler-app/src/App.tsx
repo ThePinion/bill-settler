@@ -8,6 +8,7 @@ import Login from './components/before/Login';
 import Home from './components/home/Home';
 import Expenses from './components/expenses/Expenses';
 import Groups from './components/groups/Groups';
+import NewExpense from './components/new_expense/NewExpense';
 
 const App: Component = () => {
 
@@ -24,6 +25,7 @@ const App: Component = () => {
         <Route path="/home" component={Home} />
         <Route path="/expenses" component={Expenses}/>
         <Route path="/groups" component={Groups}/>
+        <Route path="/new-expense" component={NewExpense} />
       </Routes>
     </div>
   );
