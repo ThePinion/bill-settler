@@ -1,25 +1,14 @@
 import { Component } from "solid-js";
-
-export class Expense {
-    public name: string;
-    public owner: string;
-    public cost: number;
-    public settled: boolean;
-
-    constructor(name: string, owner: string, cost: number, settled: boolean) {
-        this.name = name;
-        this.owner = owner;
-        this.cost = cost;
-        this.settled = settled;
-    }
-}
+import { Expense } from "../../model/Expense";
+import { A } from "@solidjs/router";
 
 const ExpenseComponent: Component<{expense: Expense}> = (props) => {
 
     let settledString = props.expense.settled ? "Settled" : "Unsettled"
 
     return(
-        <button 
+        <A
+            href={"/expense/" + props.expense.id}
             class="flex flex-row flex-wrap items-center justify-center rounded-xl px-4 py-2 m-2 shadow-sm
             bg-gray-700 hover:bg-[#253041] transition-all duration-200 hover:rounded-lg"
         >
@@ -33,7 +22,7 @@ const ExpenseComponent: Component<{expense: Expense}> = (props) => {
             <div class="w-16 ml-6 text-right text-gray-400">
                 {settledString}
             </div>
-        </button>
+        </A>
     );
 }
 

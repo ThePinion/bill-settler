@@ -1,14 +1,7 @@
 import { Component, JSX } from "solid-js";
 import { A } from "@solidjs/router";
 import ProfileIcon from "../common/ProfileIcon";
-
-export class Profile {
-    name: string;
-
-    constructor(name: string) {
-        this.name = name;
-    }
-}
+import { Profile } from "../../model/Profile";
 
 const SmallProfileComponent: Component<{profile: Profile}> = (props) => {
     return(

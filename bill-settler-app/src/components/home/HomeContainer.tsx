@@ -1,5 +1,6 @@
 import { For, Show, createResource, createSignal } from "solid-js";
-import ExpenseComponent, { Expense } from "../common/Expense";
+import ExpenseComponent from "../common/Expense";
+import { Expense } from "../../model/Expense";
 import Balance from "../common/Balance";
 import { AddAndSettleButtons } from "../common/HomeButtons";
 

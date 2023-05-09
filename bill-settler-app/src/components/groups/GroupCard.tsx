@@ -1,16 +1,6 @@
 import { A } from "@solidjs/router";
 import { Component } from "solid-js";
-
-export class Group {
-    public id: number;
-    public name: string;
-
-    constructor(id: number, name: string) {
-        this.id = id;
-        this.name = name;
-    }
-
-}
+import { Group } from "../../model/Group";
 
 const GroupCard: Component<{group: Group}> = (props) => {
     return(

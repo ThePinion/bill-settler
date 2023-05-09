@@ -1,5 +1,6 @@
 import MenuElement from "./MenuElement";
-import SmallProfileComponent, { Profile } from "./SmallProfile";
+import SmallProfileComponent from "./SmallProfile";
+import { Profile } from "../../model/Profile";
 import { BiRegularHomeAlt2 } from 'solid-icons/bi'
 import { AiOutlineDollar } from 'solid-icons/ai'
 import { RiUserGroupLine } from 'solid-icons/ri'
