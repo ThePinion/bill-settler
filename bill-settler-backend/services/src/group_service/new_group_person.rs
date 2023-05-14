@@ -1,9 +1,12 @@
-#[derive(Debug, serde::Deserialize)]
+use typescript_type_def::TypeDef;
+
+#[derive(Debug, serde::Deserialize, TypeDef)]
 pub enum NewGroupPersonAlias {
     User { user_id: i64 },
     NonUser { name: String },
 }
 
+#[derive(Debug, serde::Deserialize, TypeDef)]
 pub struct NewGroupPerson {
     pub creator_id: i64,
     pub group_id: i64,

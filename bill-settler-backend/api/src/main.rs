@@ -1,40 +1,41 @@
 mod routes;
 mod shutdown_signal;
 
-use std::net::SocketAddr;
-
 use anyhow::Result;
-use axum::{Router, routing};
+use axum::Extension;
+use axum::{extract::ws::WebSocketUpgrade, response::Response, routing::get, Router};
 use database::db_client::DbClient;
-use services::{user_service::UserService, group_service::GroupService};
+use services::group_service::GroupService;
+use services::user_service::UserService;
+use std::net::SocketAddr;
+use yerpc::axum::handle_ws_rpc;
+use yerpc::{RpcClient, RpcSession};
 
 #[derive(Clone)]
-pub struct AppState {
+pub struct Api {
     pub user_service: UserService,
     pub group_service: GroupService,
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    tracing_subscriber::fmt::init();
-
-    let state = AppState {
-        user_service: UserService::new(DbClient::with_config("bill-settler-janusgraph", 8182)),
-        group_service: GroupService::new(DbClient::with_config("bill-settler-janusgraph", 8182)),
+    let db_client = DbClient::with_config("localhost", 8182);
+    let api = Api {
+        user_service: UserService::new(db_client.clone()),
+        group_service: GroupService::new(db_client),
     };
+    let app = Router::new()
+        .route("/rpc", get(handler))
+        .layer(Extension(api));
 
     #[cfg(debug_assertions)]
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
 
     #[cfg(not(debug_assertions))]
-    let addr = SocketAddr::from(([0, 0, 0, 0], 80));
+    // let addr = SocketAddr::from(([0, 0, 0, 0], 80));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
 
-    let app = Router::new()
-        .route("/", routing::get(routes::index::root))
-        .nest("/users", routes::users::router(state.clone()))
-        .nest("/groups", routes::groups::router(state.clone()));
-
-    tracing::info!("Listening on {}", addr);
+    eprintln!("listening on {}", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .with_graceful_shutdown(shutdown_signal::listen())
@@ -42,4 +43,10 @@ async fn main() -> Result<()> {
     tracing::info!("Shutting down");
 
     Ok(())
+}
+
+async fn handler(ws: WebSocketUpgrade, Extension(api): Extension<Api>) -> Response {
+    let (client, out_channel) = RpcClient::new();
+    let session = RpcSession::new(client, api);
+    handle_ws_rpc(ws, out_channel, session).await
 }

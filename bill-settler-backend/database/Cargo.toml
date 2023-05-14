@@ -10,3 +10,4 @@ gremlin-client = { version = "*", features = ["derive"] }
 chrono = "*"
 database-macro = { path = "database-macro" }
 thiserror = "1.0.40"
+anyhow = { version = "1.0.71", features = ["std"] }

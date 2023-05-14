@@ -11,3 +11,4 @@ serde = { version = "*", features = ["derive"] }
 serde_json = "*"
 database = { path = "../database" }
 database-macro = { path = "../database/database-macro" }
+typescript-type-def = "0.5.6"

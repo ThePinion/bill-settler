@@ -1,8 +1,9 @@
 use database::vertex::DbSavableV;
 use database_macro::{DbLabel, DbSavable, DbVertex};
 use gremlin_client::derive::{FromGMap, FromGValue};
+use typescript_type_def::TypeDef;
 
-#[derive(Debug, PartialEq, FromGValue, FromGMap, DbLabel, DbVertex, serde::Serialize)]
+#[derive(Debug, PartialEq, FromGValue, FromGMap, DbLabel, DbVertex, serde::Serialize, TypeDef)]
 pub struct User {
     pub id: i64,
     pub email: String,

@@ -1,7 +1,8 @@
 use database_macro::{DbLabel, DbSavable, DbVertex};
 use gremlin_client::derive::FromGMap;
+use typescript_type_def::TypeDef;
 
-#[derive(Debug, PartialEq, FromGMap, DbLabel, DbVertex, DbSavable, serde::Serialize)]
+#[derive(Debug, PartialEq, FromGMap, DbLabel, DbVertex, DbSavable, serde::Serialize, TypeDef)]
 pub struct Expense {
     pub id: i64,
     pub amount: f32,
