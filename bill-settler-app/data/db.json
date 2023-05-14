@@ -1,0 +1,132 @@
+{
+    "recent-expenses":[
+        {
+            "id": 1,
+            "name": "expense1",
+            "owner": "user123",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "id": 2,
+            "name": "expense2",
+            "owner": "user123",
+            "cost": 5.00,
+            "settled": false
+        },
+        {
+            "id": 3,
+            "name": "expense3",
+            "owner": "user123",
+            "cost": 7.99,
+            "settled": false
+        },
+        {
+            "id": 4,
+            "name": "expense4",
+            "owner": "user123",
+            "cost": 3.30,
+            "settled": false
+        },
+        {
+            "id": 5,
+            "name": "expense5",
+            "owner": "user123",
+            "cost": 5.00,
+            "settled": false
+        }
+    ],
+    "expenses":[
+        {
+            "id": 1,
+            "name": "expense1",
+            "owner": "user123",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "id": 2,
+            "name": "expense2",
+            "owner": "user123",
+            "cost": 5.00,
+            "settled": false
+        },
+        {
+            "id": 3,
+            "name": "expense3",
+            "owner": "user123",
+            "cost": 7.99,
+            "settled": false
+        },
+        {
+            "id": 4,
+            "name": "expense4",
+            "owner": "user123",
+            "cost": 3.30,
+            "settled": false
+        },
+        {
+            "id": 5,
+            "name": "expense5",
+            "owner": "user123",
+            "cost": 5.00,
+            "settled": false
+        },
+        {
+            "id": 6,
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        },
+        {
+            "id": 7,
+            "name": "aaa",
+            "owner": "ladgl",
+            "cost": 11.21,
+            "settled": false
+        }
+    ],
+    "balance": {
+        "owe": 17.30,
+        "owed": 24.10
+    },
+    "groups": [
+        {
+            "id": 123,
+            "name": "Summer Trip"
+        },
+        {
+            "id": 3,
+            "name": "Family"
+        },
+        {
+            "id": 1,
+            "name": "Flat"
+        },
+        {
+            "id": 2,
+            "name": "Birthday Party"
+        },
+        {
+            "id": 4,
+            "name": "Test Group 1"
+        },
+        {
+            "id": 5,
+            "name": "Test Group 2"
+        },
+        {
+            "id": 6,
+            "name": "Test Group 3"
+        },
+        {
+            "id": 7,
+            "name": "Test Group 4"
+        },
+        {
+            "id": 8,
+            "name": "Test Group 5"
+        }
+    ]
+}
