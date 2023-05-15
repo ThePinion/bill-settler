@@ -20,7 +20,8 @@ pub struct Api {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let db_client = DbClient::with_config("localhost", 8182);
+    // let db_client = DbClient::with_config("localhost", 8182);
+    let db_client = DbClient::with_config("bill-settler-janusgraph", 8182);
     let api = Api {
         user_service: UserService::new(db_client.clone()),
         group_service: GroupService::new(db_client),
