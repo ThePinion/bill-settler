@@ -11,5 +11,6 @@ export type AddUserRequest={"email":string;"handle":string;"password":string;"na
 export type Expense={"id":I64;"amount":F32;};
 export type Group={"id":I64;"name":string;};
 export type GroupPerson={"id":I64;"name":string;};
-export type TrustUsersRequest={"source_id":I64;"target_id":I64;};
+export type LoginRequest={"handle":string;"password":string;};
 export type User={"id":I64;"email":string;"handle":string;"name":string;};
+export type TrustUsersRequest={"source_id":I64;"target_id":I64;};

@@ -19,6 +19,13 @@ const App: Component = () => {
   return (
     <div>
       <Routes>
+        {/* TODO: Only for demonstration purposes */}
+        <Route
+          path="/"
+          component={BeforeLayout}
+        >
+          <Route path="/" component={Login} />
+        </Route>
         <Route
           path="/before"
           component={BeforeLayout}

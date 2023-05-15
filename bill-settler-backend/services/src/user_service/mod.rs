@@ -16,6 +16,13 @@ impl UserService {
     pub fn add_user(&self, user: PasswordUser) -> DbResult<User> {
         self.client.add_vertex_r(user)
     }
+    pub fn login(&self, handle: String, password: String) -> DbResult<Option<User>> {
+        Ok(self
+            .client
+            .get_matching_vertices::<User, _>(vec![("handle", handle), ("password", password)])?
+            .into_iter()
+            .next())
+    }
     pub fn trust_users(&self, source_id: i64, target_id: i64) -> DbResult<Trusts> {
         Ok(self
             .client

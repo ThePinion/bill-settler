@@ -1,5 +1,5 @@
 use gremlin_client::{
-    process::traversal::{traversal, GraphTraversalSource, SyncTerminator},
+    process::traversal::{has::HasStep, traversal, GraphTraversalSource, SyncTerminator},
     ConnectionOptions, GremlinClient,
 };
 
@@ -113,4 +113,26 @@ impl DbClient {
             .filter_map(Result::ok)
             .collect::<Vec<_>>())
     }
+
+    pub fn get_matching_vertices<T, S>(&self, properties: Vec<S>) -> DbResult<Vec<T>>
+    where
+        T: DbVertex,
+        S: Into<HasStep>,
+        DbError: From<<T as TryFrom<gremlin_client::Map>>::Error>,
+    {
+        Ok(self
+            .traversal
+            .v(())
+            .has_label(T::g_label())
+            .has_many(properties)
+            .value_map(true)
+            .iter()?
+            .filter_map(Result::ok)
+            .map(T::try_from)
+            .filter_map(Result::ok)
+            .collect::<Vec<_>>())
+    }
 }
+
+pub trait IntoHasStepSized: Into<HasStep> + Sized {}
+impl<T> IntoHasStepSized for T where T: Into<HasStep> + Sized {}

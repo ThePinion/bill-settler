@@ -25,6 +25,12 @@ struct AddUserRequest {
     name: String,
 }
 
+#[derive(Debug, Deserialize, TypeDef, Clone)]
+struct LoginRequest {
+    handle: String,
+    password: String,
+}
+
 #[derive(Debug, serde::Deserialize, TypeDef)]
 struct AddGroupRequest {
     user_id: i64,
@@ -46,6 +52,7 @@ struct AddExpenseRequest {
     pub schema: ExpenseSchema,
 }
 
+// ts_outdir = "../../../../bill-settler-app/src/lib"
 #[rpc(all_positional)]
 impl Api {
     async fn hello_world(&self) -> String {
@@ -61,6 +68,14 @@ impl Api {
                 &payload.password,
                 &payload.name,
             ))
+            .map_err(|e| anyhow::Error::from(e))?;
+        Ok(user)
+    }
+
+    async fn login(&self, payload: LoginRequest) -> Result<Option<User>, Error> {
+        let user = self
+            .user_service
+            .login(payload.handle, payload.password)
             .map_err(|e| anyhow::Error::from(e))?;
         Ok(user)
     }

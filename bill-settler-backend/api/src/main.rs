@@ -5,6 +5,7 @@ use anyhow::Result;
 use axum::Extension;
 use axum::{extract::ws::WebSocketUpgrade, response::Response, routing::get, Router};
 use database::db_client::DbClient;
+use models::vertices::user::PasswordUser;
 use services::group_service::GroupService;
 use services::user_service::UserService;
 use std::net::SocketAddr;
@@ -24,6 +25,15 @@ async fn main() -> Result<()> {
         user_service: UserService::new(db_client.clone()),
         group_service: GroupService::new(db_client),
     };
+
+    //TODO: Only for demonstration purposes
+    api.user_service.add_user(PasswordUser {
+        email: "test@test.pl".to_string(),
+        handle: "test".to_string(),
+        password: "test".to_string(),
+        name: "Test1".to_string(),
+    })?;
+
     let app = Router::new()
         .route("/rpc", get(handler))
         .layer(Extension(api));
@@ -32,8 +42,8 @@ async fn main() -> Result<()> {
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
 
     #[cfg(not(debug_assertions))]
-    // let addr = SocketAddr::from(([0, 0, 0, 0], 80));
-    let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 80));
+    // let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
 
     eprintln!("listening on {}", addr);
     axum::Server::bind(&addr)

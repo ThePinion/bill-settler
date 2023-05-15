@@ -1,4 +1,4 @@
-const url = "ws://localhost:8080/rpc";
+const url = "ws://localhost:80/rpc";
 
 import { createSignal } from "solid-js";
 import { RawClient } from "../lib/client";

@@ -25,6 +25,11 @@ export class RawClient {
   }
 
 
+  public login(payload: T.LoginRequest): Promise<(T.User|null)> {
+    return (this._transport.request('login', [payload] as RPC.Params)) as Promise<(T.User|null)>;
+  }
+
+
   public trustUsers(payload: T.TrustUsersRequest): Promise<null> {
     return (this._transport.request('trust_users', [payload] as RPC.Params)) as Promise<null>;
   }
