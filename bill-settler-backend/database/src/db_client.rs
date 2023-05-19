@@ -24,6 +24,8 @@ impl DbClient {
 
         let client = GremlinClient::connect(options).expect("Can connect");
 
+        let sessioned = client.clone().create_session("name".to_string()).unwrap();
+
         let g = traversal().with_remote(client);
 
         DbClient::new(g.clone())
