@@ -58,6 +58,7 @@ export default function DetailedExpense() {
                                 type="number"
                                 id="cost"
                                 name="cost"
+                                step={.01}
                                 disabled={!editMode()}
                                 value={expense().cost}
                             />
